@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="description" content="Tap to bounce and avoid obstacles!">
+  <meta property="og:title" content="Neon Bounce Dash">
+  <meta property="og:description" content="Tap to bounce and avoid obstacles!">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Neon Bounce Dash">
+  <meta name="twitter:description" content="Tap to bounce and avoid obstacles!">
+  <title>Neon Bounce Dash</title>
+  <link rel="manifest" href="manifest.json">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body {
+      width: 100%; height: 100%;
+      overflow: hidden;
+      background: #1a1a2e;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    }
+    #game-container {
+      width: 100%; height: 100%;
+      max-width: 480px;
+      max-height: 100vh;
+      position: relative;
+    }
+    canvas {
+      display: block;
+      width: 100% !important;
+      height: 100% !important;
+      touch-action: none;
+    }
+    #loading {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      background: #1a1a2e;
+      z-index: 10;
+    }
+    #loading h1 { font-size: 1.8rem; margin-bottom: 0.5rem; }
+    #loading p { color: #aaa; font-size: 0.9rem; }
+    #loading.hidden { display: none; }
+  </style>
+</head>
+<body>
+  <div id="game-container">
+    <div id="loading">
+      <h1>Neon Bounce Dash</h1>
+      <p>Loading...</p>
+    </div>
+  </div>
+
+  <script>
+    // Analytics beacon
+    const GAME_ID = 'neon-bounce-dash';
+    function beacon(event, data) {
+      try {
+        if (navigator.sendBeacon) {
+          navigator.sendBeacon('/analytics', JSON.stringify({
+            event, gameId: GAME_ID, ts: Date.now(), ...data
+          }));
+        }
+      } catch(e) {}
+    }
+    window.gameBeacon = beacon;
+    beacon('page_load', {});
+  </script>
+
+  <!-- Phaser 3 -->
+  <script
+    src="https://cdn.jsdelivr.net/npm/phaser@3.60.0/dist/phaser.min.js"
+    onload="document.getElementById('loading').classList.add('hidden')"
+  ></script>
+
+  <script>const GAME_META = { id: 'neon-bounce-dash', title: 'Neon Bounce Dash' };</script>
+  <script src="game.js"></script>
+</body>
+</html>
